@@ -8,14 +8,14 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                echo '📥 Pulling latest code...'
+                echo 'Pulling latest code..'
                 checkout scm
             }
         }
 
         stage('Deploy with Docker Compose') {
             steps {
-                echo '🚀 Deploying application (Part II Configuration)...'
+                echo 'Deploying application...'
                 sh 'docker compose -f ${COMPOSE_FILE} down'
                 sh 'docker compose -f ${COMPOSE_FILE} up -d'
             }
@@ -24,7 +24,7 @@ pipeline {
 
     post {
         always {
-            echo '✅ Pipeline finished.'
+            echo 'DONE!! Pipeline finished.'
         }
     }
 }
