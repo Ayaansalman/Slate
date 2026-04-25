@@ -1,0 +1,17 @@
+services:
+  app:
+    image: node:18-alpine
+    container_name: slate-app-ci
+    working_dir: /app
+    volumes:
+      - .:/app
+      - slate_data_ci:/app/data
+    ports:
+      - "4000:3000"
+    command: sh -c "npm install && npm start"
+    environment:
+      - DB_PATH=/app/data/slate.db
+      - PORT=3000
+
+volumes:
+  slate_data_ci:
