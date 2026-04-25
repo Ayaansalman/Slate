@@ -6,12 +6,10 @@ const initSqlJs = require('sql.js');
 
 const app = express();
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ── SQLite Setup ──
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data', 'slate.db');
 const dataDir = path.dirname(DB_PATH);
 if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
@@ -21,7 +19,6 @@ let db;
 async function initDB() {
   const SQL = await initSqlJs();
 
-  // Load existing database file if it exists, otherwise create new
   if (fs.existsSync(DB_PATH)) {
     const fileBuffer = fs.readFileSync(DB_PATH);
     db = new SQL.Database(fileBuffer);
@@ -29,7 +26,6 @@ async function initDB() {
     db = new SQL.Database();
   }
 
-  // Create tables
   db.run(`
     CREATE TABLE IF NOT EXISTS students (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,7 +68,6 @@ function saveDB() {
   fs.writeFileSync(DB_PATH, buffer);
 }
 
-// Helper: run query and return array of objects
 function queryAll(sql, params = []) {
   const stmt = db.prepare(sql);
   if (params.length) stmt.bind(params);
@@ -91,10 +86,6 @@ function runSQL(sql, params = []) {
   db.run(sql, params);
   saveDB();
 }
-
-// ──────────────────────────────────────────────
-// STUDENT ROUTES
-// ──────────────────────────────────────────────
 
 app.get('/api/students', (req, res) => {
   const students = queryAll('SELECT * FROM students ORDER BY created_at DESC');
@@ -136,10 +127,6 @@ app.delete('/api/students/:id', (req, res) => {
   res.json({ message: 'Student deleted' });
 });
 
-// ──────────────────────────────────────────────
-// COURSE ROUTES
-// ──────────────────────────────────────────────
-
 app.get('/api/courses', (req, res) => {
   const courses = queryAll('SELECT * FROM courses ORDER BY created_at DESC');
   res.json(courses);
@@ -180,10 +167,6 @@ app.delete('/api/courses/:id', (req, res) => {
   res.json({ message: 'Course deleted' });
 });
 
-// ──────────────────────────────────────────────
-// ENROLLMENT ROUTES
-// ──────────────────────────────────────────────
-
 app.get('/api/enrollments', (req, res) => {
   const enrollments = queryAll(`
     SELECT e.id, e.enrolled_at,
@@ -222,12 +205,10 @@ app.delete('/api/enrollments/:id', (req, res) => {
   res.json({ message: 'Enrollment removed' });
 });
 
-// Serve frontend
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start
 const PORT = process.env.PORT || 3000;
 initDB().then(() => {
   app.listen(PORT, '0.0.0.0', () => {

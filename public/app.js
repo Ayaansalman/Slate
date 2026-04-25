@@ -1,10 +1,8 @@
-// ── Slate Frontend Logic ──
 const API = '';
 let currentTab = 'students';
 let editingId = null;
 let editingType = null;
 
-// ── Tab Navigation ──
 document.querySelectorAll('.nav__btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.nav__btn').forEach(b => b.classList.remove('active'));
@@ -16,7 +14,6 @@ document.querySelectorAll('.nav__btn').forEach(btn => {
   });
 });
 
-// ── Data Loading ──
 async function loadStudents() {
   try {
     const res = await fetch(`${API}/api/students`);
@@ -101,7 +98,6 @@ async function loadEnrollments() {
   } catch (err) { showToast('Failed to load enrollments', 'error'); }
 }
 
-// ── Modal ──
 function openModal(type, data = null) {
   editingType = type;
   editingId = data ? data.id : null;
@@ -158,7 +154,6 @@ async function populateEnrollmentDropdowns() {
   } catch (err) { showToast('Failed to load dropdown data', 'error'); }
 }
 
-// ── Form Submit ──
 async function handleSubmit(e) {
   e.preventDefault();
   try {
@@ -208,7 +203,6 @@ async function handleSubmit(e) {
   }
 }
 
-// ── Edit / Delete ──
 async function editStudent(id) {
   const res = await fetch(`${API}/api/students`);
   const students = await res.json();
@@ -244,7 +238,6 @@ async function deleteEnrollment(id) {
   loadEnrollments();
 }
 
-// ── Toast ──
 function showToast(msg, type = 'success') {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
@@ -254,7 +247,6 @@ function showToast(msg, type = 'success') {
   setTimeout(() => { toast.classList.add('removing'); setTimeout(() => toast.remove(), 300); }, 3000);
 }
 
-// ── Utility ──
 function esc(str) {
   if (!str) return '';
   const d = document.createElement('div');
@@ -262,11 +254,9 @@ function esc(str) {
   return d.innerHTML;
 }
 
-// ── Keyboard ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 
-// ── Init ──
 loadStudents();
 loadCourses();
