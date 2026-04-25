@@ -1,0 +1,17 @@
+{
+  "name": "slate",
+  "version": "1.0.0",
+  "description": "Slate — Student Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.11.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  },
+  "author": "Ayaan Salman",
+  "license": "ISC"
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Slate - Modern Student Management System">
+  <title>Slate — Student Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--1"></div>
+  <div class="bg-glow bg-glow--2"></div>
+
+  <header class="header" id="header">
+    <div class="header__inner">
+      <a href="/" class="logo" id="logo">
+        <span class="logo__icon">&#9670;</span>
+        <span class="logo__text">Slate</span>
+      </a>
+      <nav class="nav" id="main-nav">
+        <button class="nav__btn active" data-tab="students" id="nav-students">Students</button>
+        <button class="nav__btn" data-tab="courses" id="nav-courses">Courses</button>
+        <button class="nav__btn" data-tab="enrollments" id="nav-enrollments">Enrollments</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main" id="main-content">
+    <!-- STUDENTS -->
+    <section class="tab-panel active" id="panel-students">
+      <div class="panel-header">
+        <div><h1 class="panel-title">Students</h1><p class="panel-subtitle">Manage your student roster</p></div>
+        <button class="btn btn--primary" id="btn-add-student" onclick="openModal('student')">+ Add Student</button>
+      </div>
+      <div class="stats-row" id="student-stats">
+        <div class="stat-card"><span class="stat-card__value" id="stat-total-students">0</span><span class="stat-card__label">Total Students</span></div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="students-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Program</th><th>Semester</th><th>Actions</th></tr></thead>
+          <tbody id="students-tbody"></tbody>
+        </table>
+        <div class="empty-state" id="students-empty">
+          <p>No students yet. Click <strong>"Add Student"</strong> to get started.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES -->
+    <section class="tab-panel" id="panel-courses">
+      <div class="panel-header">
+        <div><h1 class="panel-title">Courses</h1><p class="panel-subtitle">Manage available courses</p></div>
+        <button class="btn btn--primary" id="btn-add-course" onclick="openModal('course')">+ Add Course</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><span class="stat-card__value" id="stat-total-courses">0</span><span class="stat-card__label">Total Courses</span></div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="courses-table">
+          <thead><tr><th>Code</th><th>Title</th><th>Credits</th><th>Instructor</th><th>Actions</th></tr></thead>
+          <tbody id="courses-tbody"></tbody>
+        </table>
+        <div class="empty-state" id="courses-empty">
+          <p>No courses yet. Click <strong>"Add Course"</strong> to get started.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENROLLMENTS -->
+    <section class="tab-panel" id="panel-enrollments">
+      <div class="panel-header">
+        <div><h1 class="panel-title">Enrollments</h1><p class="panel-subtitle">Link students to courses</p></div>
+        <button class="btn btn--primary" id="btn-add-enrollment" onclick="openModal('enrollment')">+ Enroll Student</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="enrollments-table">
+          <thead><tr><th>Student</th><th>Course</th><th>Enrolled At</th><th>Actions</th></tr></thead>
+          <tbody id="enrollments-tbody"></tbody>
+        </table>
+        <div class="empty-state" id="enrollments-empty">
+          <p>No enrollments yet. Click <strong>"Enroll Student"</strong> to link a student to a course.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+    <div class="modal" id="modal" onclick="event.stopPropagation()">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-title">Add</h2>
+        <button class="modal__close" id="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <form id="modal-form" onsubmit="handleSubmit(event)">
+        <div class="modal__body" id="modal-body"></div>
+        <div class="modal__footer">
+          <button type="button" class="btn btn--ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="modal-submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

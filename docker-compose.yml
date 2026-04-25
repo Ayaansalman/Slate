@@ -1,0 +1,21 @@
+# ── Slate Docker Compose ──
+# Runs the web app with SQLite (persistent volume for database file)
+
+version: '3.8'
+
+services:
+  app:
+    image: lazywitcher/slate:latest
+    container_name: slate-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_PATH=/app/data/slate.db
+      - PORT=3000
+    volumes:
+      - slate_data:/app/data
+
+volumes:
+  slate_data:
+    driver: local
